@@ -8,6 +8,7 @@
 </head>
 <body>
     <h1>Fortune Admin Page</h1>
+    <p><a href="/">Back home</a></p>
     <hr/>
     <h3>Add a Fortune</h3>
     <form id="post-fortune-form" action="post_fortune" method="POST" >
@@ -15,26 +16,30 @@
         <button type="submit">Save</button>
         
     </form>
-
     <hr/>
 
     {% if data.all_fortunes %}
         <h2>Saved Fortunes</h2>
-
         <ul> 
         {% for fortune in data.all_fortunes %}
-        
-
-            <li>{{ fortune }}</li>
-        
-        
+            <li>{{ fortune }}</li>    
         {% endfor %}
         </ul>
-
     {% else %}
-
         <p>You have no saved fortunes. Add some!</p>
+    {% endif %}
 
+    <hr/>
+
+    {% if data.all_users %}
+        <h2>Users</h2>
+        <ul> 
+        {% for user in data.all_users %}
+            <li>{{ user }}</li>    
+        {% endfor %}
+         </ul>
+    {% else %}
+        <p>You have no users. Invite some!</p>
     {% endif %}
 
     

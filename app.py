@@ -20,17 +20,30 @@ def get_all_fortunes():
 
     return all_fortunes
 
+def get_all_users():
+    print("getting all users...")
+
+     #connect to DB
+    conn = sqlite3.connect('./static/data/fortuneteller.db')
+    curs = conn.cursor()
+    all_users = []
+    rows = curs.execute("SELECT * from users")
+    for row in rows:
+        user = {'name': row[0],  'username': row[1]}
+        all_users.append(user)
+    conn.close()
+
+    return all_users
 
 
 def store_fortune(new_fortune, fortune_date):
 
     print("Storing new Fortune!")
 
-
     #connect to database
     conn = sqlite3.connect('./static/data/fortuneteller.db')
     curs = conn.cursor()
-
+    #insert a new row to the db and commit
     curs.execute("INSERT INTO fortunes (fortune, date) VALUES((?),(?))",(new_fortune, fortune_date ))
     conn.commit()
     #close database connection
@@ -45,6 +58,7 @@ def index():
 @app.route('/login', methods=["POST"])
 def login():
     print("Logging in...")
+
     data = {
         "message": "Welcome!",
 
@@ -52,17 +66,18 @@ def login():
     return render_template('index.html', data=data)
 
 @app.route('/admin')
-def home():
+def admin_home():
 
     fortunes = get_all_fortunes()
-
+    users = get_all_users()
 
 
     if len(fortunes) > 0:
         print("We have fortunes to pass on!")
 
         data = {
-            "all_fortunes": fortunes
+            "all_fortunes": fortunes,
+            "all_users": users
         }
 
         return render_template('admin.html', data=data)
