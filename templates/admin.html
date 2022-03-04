@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Fortune Admin Page</h1>
+    <hr/>
+    <h3>Add a Fortune</h3>
+    <form id="post-fortune-form" action="post_fortune" method="POST" >
+        ​<textarea id="fortune-area" name="fortune-input" rows="10" cols="70"></textarea>
+        <button type="submit">Save</button>
+        
+    </form>
+
+    <hr/>
+
+    {% if data.all_fortunes %}
+        <h2>Saved Fortunes</h2>
+
+        <ul> 
+        {% for fortune in data.all_fortunes %}
+        
+
+            <li>{{ fortune }}</li>
+        
+        
+        {% endfor %}
+        </ul>
+
+    {% else %}
+
+        <p>You have no saved fortunes. Add some!</p>
+
+    {% endif %}
+
+    
+</body>
+</html>
