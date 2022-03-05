@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+from markupsafe import re
 import requests
 import sqlite3
 from datetime import datetime
@@ -6,10 +7,21 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-def validate_user():
-
+def validate_user(username, password):
+    print("validating user...")
     user = {}
 
+    conn = sqlite3.connect('./static/data/fortuneteller.db')
+    curs = conn.cursor()
+    result  = curs.execute("SELECT name, username, password FROM users WHERE username=(?) AND password= (?)", [username, password])
+     
+    
+
+    for row in result:
+        user = {'name': row[0],  'username': row[1]}
+        print(user)
+         
+    conn.close()
     return user
 
 def get_all_fortunes():
@@ -65,10 +77,22 @@ def index():
 def login():
     print("Logging in...")
 
+    username = request.form["username-field"]
+    password = request.form["password-field"]
+
+    data = {}
+    user = validate_user(username, password)
+
+    if user:
+        success_msg = "Welcome, "+ user["name"]
+    else: 
+        success_msg = "Login failed"
+    
     data = {
-        "message": "Welcome!",
+        "success_msg": success_msg
 
     }
+    print(data)
     return render_template('index.html', data=data)
 
 @app.route('/admin')
