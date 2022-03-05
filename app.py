@@ -2,9 +2,20 @@ from flask import Flask, render_template, request
 import requests
 import sqlite3
 from datetime import datetime
+import random
 
 
 app = Flask(__name__)
+
+def get_random_fortune():
+
+    #returns a random fortune
+    
+    all_fortunes = get_all_fortunes() # returns a list by our own function
+    random_choice = random.choice(all_fortunes) # import random to use this
+    random_fortune = random_choice["fortune"]
+    
+    return random_fortune
 
 def get_all_fortunes():
     print("getting all fortunes")
@@ -53,7 +64,10 @@ def store_fortune(new_fortune, fortune_date):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+
+    random_fortune = get_random_fortune()
+
+    return render_template('index.html', random_fortune=random_fortune)
 
 @app.route('/login', methods=["POST"])
 def login():
