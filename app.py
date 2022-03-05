@@ -1,6 +1,4 @@
 from flask import Flask, render_template, request
-from markupsafe import re
-import requests
 import sqlite3
 from datetime import datetime
 
@@ -13,13 +11,11 @@ def validate_user(username, password):
 
     conn = sqlite3.connect('./static/data/fortuneteller.db')
     curs = conn.cursor()
+    #get all columns if there is a match
     result  = curs.execute("SELECT name, username, password FROM users WHERE username=(?) AND password= (?)", [username, password])
-     
-    
-
+  
     for row in result:
         user = {'name': row[0],  'username': row[1]}
-        print(user)
          
     conn.close()
     return user
