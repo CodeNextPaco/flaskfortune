@@ -6,6 +6,12 @@ from datetime import datetime
 
 app = Flask(__name__)
 
+def validate_user():
+
+    user = {}
+
+    return user
+
 def get_all_fortunes():
     print("getting all fortunes")
     #connect to DB
