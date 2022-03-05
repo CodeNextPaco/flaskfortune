@@ -1,3 +1,4 @@
+from this import d
 from flask import Flask, render_template, request
 import sqlite3
 from datetime import datetime
@@ -12,10 +13,11 @@ def get_random_fortune():
     all_fortunes = get_all_fortunes() # returns a list by our own function
     random_choice = random.choice(all_fortunes) # import random to use this
     random_fortune = random_choice["fortune"]
+    print(random_fortune)
     
     return random_fortune
 
-    return user
+    
 
 def get_all_fortunes():
     print("getting all fortunes")
@@ -64,7 +66,16 @@ def store_fortune(new_fortune, fortune_date):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    print("index.html")
+    
+    random_fortune = get_random_fortune()
+
+    data = {
+        "random_fortune": random_fortune
+    }
+    print(random_fortune)
+
+    return render_template('index.html', data=data)
 
 @app.route('/login', methods=["POST"])
 def login():
@@ -81,8 +92,8 @@ def admin_home():
 
     fortunes = get_all_fortunes()
     users = get_all_users()
-
-
+    
+   
     if len(fortunes) > 0:
         print("We have fortunes to pass on!")
 
@@ -91,11 +102,11 @@ def admin_home():
             "all_users": users
         }
 
-        return render_template('admin.html', data=data)
+    return render_template('admin.html', data=data)
 
        
 
-    return render_template('admin.html')
+    
         
     
     
