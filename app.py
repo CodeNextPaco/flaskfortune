@@ -24,7 +24,7 @@ def validate_user(username, password):
     conn = sqlite3.connect('./static/data/fortuneteller.db')
     curs = conn.cursor()
     #get all columns if there is a match
-    result  = curs.execute("SELECT name, username, password FROM users WHERE username=(?) AND password= (?)", [username, password])
+    result  = curs.execute("SELECT rowid, name, username, password FROM users WHERE username=(?) AND password= (?)", [username, password])
   
     for row in result:
        user = {'name': row[0],  'username': row[1]}
@@ -38,10 +38,11 @@ def get_all_fortunes():
     conn = sqlite3.connect('./static/data/fortuneteller.db')
     curs = conn.cursor()
     all_fortunes = []
-    rows = curs.execute("SELECT * from fortunes")
+    rows = curs.execute("SELECT rowid, * from fortunes")
     for row in rows:
-        fortune = {'fortune': row[0],  'date': row[1]}
+        fortune = {'rowid': row[0], 'fortune': row[1],  'date': row[2]}
         all_fortunes.append(fortune)
+        print(fortune)
     conn.close()
 
     return all_fortunes

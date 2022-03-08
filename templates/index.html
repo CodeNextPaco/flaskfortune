@@ -4,28 +4,41 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+
+
     <title>Document</title>
 </head>
 <body>
-    <h1> Flask Fortune Teller</h1>
     <a href="/admin">Admin</a>
+    <div class="main-container">
+        <div class="title-container">
+            <h1 class="main-title"> Flask Fortune Teller</h1>
+        </div>
+       
+            
+            <div class="login-form-box">
 
-    <hr/>
+                <form id="login-form" action="login" method="POST" >
+
+                    <input class="login-field" id="username-field" name="username-field" type="text" placeholder="your email">
+                    <input class="login-field" id="password-field" name="password-field" type="password" placeholder="your password">
+                    <button class="login-field" id="login-btn" type="submit">Log in</button>
+                    
+                </form>
+
+
+            </div>
+          
+
     
+                    {% if data %}
+                    <h3>{{ data.error_msg}}</h3>
 
-    <form id="login-form" action="login" method="POST" >
+                    {% endif %}
 
-        <input name="username-field" type="text" placeholder="your email">
-        <input name="password-field" type="password" placeholder="your password">
-        <button type="submit">Log in</button>
-        
-    </form>
-
-    <hr/>
-    {% if data %}
-    <h3>{{ data.error_msg}}</h3>
-
-    {% endif %}
+    </div>
+    
 </body>
 </html>
  
