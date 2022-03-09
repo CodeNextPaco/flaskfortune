@@ -12,14 +12,14 @@
     <div class="main-admin-container">
 
         <h1 class="main-title">Fortune Admin Page</h1>
-    <p><a href="/">Back home</a></p>
-    <hr/>
-    <h3>Add a Fortune</h3>
-    <form id="post-fortune-form" action="post_fortune" method="POST" >
-        ​<textarea class="fortune-area" name="fortune-input" rows="10" cols="70"></textarea>
-        <button class="save-fortune-btn" type="submit">Save</button>
-        
-    </form>
+        <p><a href="/">Back home</a></p>
+        <hr/>
+        <h3>Add a Fortune</h3>
+            <form id="post-fortune-form" action="post_fortune" method="POST" >
+                ​<textarea id="fortune-input" class="fortune-area" name="fortune-input" rows="10" cols="70"></textarea>
+                <button class="save-fortune-btn" type="submit">Save</button>
+                
+            </form>
     <hr/>
 
     {% if data.all_fortunes %}

@@ -207,7 +207,7 @@ def delete_fortunte(id):
     return render_template('admin.html',data=data )
 
 
-@app.route('/post_fortune', methods=['POST'])
+@app.route('/admin/post_fortune', methods=['POST'])
 def post_fortune():
 
     print("posting fortune: ")

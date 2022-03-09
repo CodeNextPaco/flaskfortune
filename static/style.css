@@ -62,6 +62,7 @@ Sets a background keyframe animation "gradient" see keframe definition below bod
     font-size: 33px;
     width:80%;
     height: 200px;
+    padding:10px;
 }
 
 .main-admin-container{
@@ -121,8 +122,6 @@ ul{
     border-left-style: hidden;
     border-bottom-style: hidden;
     background-color: #eee;
-
-    
 
 }
 
