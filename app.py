@@ -3,9 +3,12 @@ import sqlite3
 from datetime import datetime
 import random
 
+import idna
+
 
 app = Flask(__name__)
 
+########################### DATABASE FUNCTIONS #############################
 def get_random_fortune():
 
     #returns a random fortune
@@ -38,6 +41,8 @@ def get_all_fortunes():
     conn = sqlite3.connect('./static/data/fortuneteller.db')
     curs = conn.cursor()
     all_fortunes = []
+
+    #all sql rows have a row id by default. use that to reference each one.
     rows = curs.execute("SELECT rowid, * from fortunes")
     for row in rows:
         fortune = {'rowid': row[0], 'fortune': row[1],  'date': row[2]}
@@ -76,11 +81,63 @@ def store_fortune(new_fortune, fortune_date):
     #close database connection
     conn.close()
 
+def delete_row(table, id):
+    conn = sqlite3.connect('./static/data/fortuneteller.db')
+    curs = conn.cursor()
+    updated_rows=[]
+    #this function uses the row id to search for the one to delete in the db.
+    if table=="fortunes":
 
+        curs.execute("DELETE FROM fortunes WHERE rowid=(?)", (id,))
+        print("Deleting fortune id : " + id)
+        updated_rows = get_all_fortunes()
+
+    elif table=="users":
+        curs.execute("DELETE FROM user WHERE rowid=(?)", (id,))
+        print("Deleting user id : " + id)
+        updated_rows = get_all_users()
+
+    conn.commit()
+    #close database connection
+    conn.close()
+
+    
+
+    return updated_rows
+
+################################ PAGE ROUTES ##################################
 
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route("/home")
+def user_home():
+    print("were home!")
+
+    return render_template('home.html')
+
+
+@app.route('/admin/')
+def admin_home():
+
+    fortunes = get_all_fortunes()
+    users = get_all_users()
+
+
+    if len(fortunes) > 0:
+        print("We have fortunes to pass on!")
+
+        data = {
+            "all_fortunes": fortunes,
+            "all_users": users
+        }
+
+        return render_template('admin.html', data=data)
+
+    return render_template('admin.html')
+
+############################### GET/POST ##################################    
 
 @app.route('/login', methods=["POST"])
 def login():
@@ -125,37 +182,29 @@ def get_fortune():
 
     return render_template('home.html', data=data)
 
+@app.route('/edit-fortune/<id>')
+def edit_fortune():
 
-@app.route("/home", methods=["GET", "POST"])
-def user_home():
-    print("were home!")
+    data={}
+    return render_template('admin.html', data=data)
+    
+@app.route('/delete-fortune/<id>')
+def delete_fortunte(id):
+    print("deleting fortune: " + id)
 
-    return render_template('home.html')
+    
+    #get_all_fortunes should return an updated list.
 
-
-@app.route('/admin')
-def admin_home():
-
-    fortunes = get_all_fortunes()
+    fortunes = delete_row("fortunes", id)
     users = get_all_users()
 
+    data={
+         "all_fortunes": fortunes,
+         "all_users": users
 
-    if len(fortunes) > 0:
-        print("We have fortunes to pass on!")
+    }
 
-        data = {
-            "all_fortunes": fortunes,
-            "all_users": users
-        }
-
-        return render_template('admin.html', data=data)
-
-       
-
-    return render_template('admin.html')
-        
-    
-    
+    return render_template('admin.html',data=data )
 
 
 @app.route('/post_fortune', methods=['POST'])

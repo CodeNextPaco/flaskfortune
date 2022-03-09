@@ -36,15 +36,63 @@ Sets a background keyframe animation "gradient" see keframe definition below bod
     width: 40%;
     height: 40%;
     top: 20%;
-    left: 36%;
+    left: 32%;
     background-color:rgba(238, 227, 227, 0.3);
     border-radius: 6px;
     overflow: hidden;
 }
 
+.save-fortune-btn{
+
+    width:80%;
+    font-size: 3vh;
+    margin-top: 1vh;
+    border-radius: 6px;
+    color:whitesmoke;
+    padding: 8px;
+     
+}
+
+.fortune-area{
+
+    border-radius: 6px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 33px;
+    width:80%;
+    height: 200px;
+}
+
+.main-admin-container{
+
+    text-align: center;
+    position: relative;
+
+    width: 60%;
+    height: auto;
+    top: 8%;
+    left: 22%;
+    background-color:rgba(238, 227, 227, 0.3);
+    border-radius: 6px;
+    padding-bottom: 40px;
+     
+}
+
+ul{
+
+    text-align: left;
+    font-size: 3vh;
+    color:whitesmoke;
+}
+ li{
+
+ margin-top: 1vh;
+}
+
 .main-title{
 
-    color:thistle;
+    color:whitesmoke;
     font-size: 6vh;
 }
 
@@ -54,7 +102,7 @@ Sets a background keyframe animation "gradient" see keframe definition below bod
 
 }
 
-#login-btn{
+#login-btn, .save-fortune-btn{
 
     background-color: #e73c7e;
 
@@ -78,4 +126,4 @@ Sets a background keyframe animation "gradient" see keframe definition below bod
 
 }
 
- 
+  
