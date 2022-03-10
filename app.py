@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 from datetime import datetime
 import random
@@ -228,10 +228,10 @@ def post_fortune():
 
             "all_fortunes": fortunes
         }
-
-        return render_template('admin.html',data=data )
-
-    return render_template('admin.html' )
+ 
+      #  return render_template('admin.html',data=data )
+    return redirect(url_for('admin_home'))
+    #return render_template('admin.html' )
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
