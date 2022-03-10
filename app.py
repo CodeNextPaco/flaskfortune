@@ -198,15 +198,8 @@ def delete_fortunte(id):
     #get_all_fortunes should return an updated list.
 
     fortunes = delete_row("fortunes", id)
-    users = get_all_users()
-
-    data={
-         "all_fortunes": fortunes,
-         "all_users": users
-
-    }
-
-    return render_template('admin.html',data=data )
+ 
+    return redirect(url_for('admin_home') )
 
 
 @app.route('/admin/post_fortune', methods=['POST'])
