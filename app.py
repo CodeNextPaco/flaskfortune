@@ -90,14 +90,16 @@ def delete_row(table, id):
 
         curs.execute("DELETE FROM fortunes WHERE rowid=(?)", (id,))
         print("Deleting fortune id : " + id)
+        conn.commit()
         updated_rows = get_all_fortunes()
 
     elif table=="users":
         curs.execute("DELETE FROM user WHERE rowid=(?)", (id,))
         print("Deleting user id : " + id)
+        conn.commit()
         updated_rows = get_all_users()
 
-    conn.commit()
+    
     #close database connection
     conn.close()
 
