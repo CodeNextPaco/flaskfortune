@@ -185,7 +185,8 @@ def get_fortune():
     return render_template('home.html', data=data)
 
 @app.route('/edit-fortune/<id>')
-def edit_fortune():
+def edit_fortune(id):
+
 
     data={}
     return render_template('admin.html', data=data)

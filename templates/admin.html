@@ -27,8 +27,15 @@
         <ul class="fortune-list"> 
         {% for fortune in data.all_fortunes %}
             <li>{{ fortune.fortune }}
+
+                <!-- 
+                <a href={{ url_for('edit-fortune' , id = fortune.rowid ) }}>Edit</a>|
+                <a href={{ url_for('delete-fortune' , id = fortune.rowid ) }}>Delete</a>
+                  -->
                 <a href="{{ '/edit-fortune/%s' %fortune.rowid }}">Edit</a>|
                 <a href="{{ '/delete-fortune/%s' %fortune.rowid }}">Delete</a>
+
+                
             </li>    
         {% endfor %}
         </ul>
