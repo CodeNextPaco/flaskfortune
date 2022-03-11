@@ -8,23 +8,36 @@
     <title>Home</title>
 </head>
 <body>
+
+    <div class="main-admin-container">
+
+        <h2>Welcome back, {{ data.name}}</h2>
+
+        <h3>Get your Fortune</h3>
+        <div id="get-fortune-box"> 
+            
+            <form id="post-fortune-form" action="get_fortune" method="GET" >
+                <button id="get-fortune-btn" type="submit"></button>
+            </form>
     
-    <h3>Welcome back, {{ data.name}}</h3>
+        
+        </div>
+        
 
-    <h3>Ger your Fortune</h3>
-    <hr/>
-    <form id="post-fortune-form" action="get_fortune" method="GET" >
-        <button id="get-fortune-btn" type="submit">Oh wise one, What does the future hold?</button>
-    </form>
-   
 
-    {% if data.fortune %}
+        {% if data.fortune %}
 
-    <h2> Here is your fortune </h2>
+        <h2> Here is your fortune </h2>
 
-    <h3> {{ data.fortune }} </h3>
+        <h1> {{ data.fortune }} </h1>
 
-    {% endif %}
+        {% endif %}
+
+
+
+    </div>
+    
+    
 
      
 

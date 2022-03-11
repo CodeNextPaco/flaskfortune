@@ -9,6 +9,31 @@ import idna
 app = Flask(__name__)
 
 ########################### DATABASE FUNCTIONS #############################
+
+def update_fortune(rowid, fortune):
+
+    conn = sqlite3.connect('./static/data/fortuneteller.db')
+    curs = conn.cursor()
+    result  = curs.execute("UPDATE fortunes SET fortune=(?) WHERE rowid=(?)", [fortune, rowid])
+    conn.commit()
+    #close database connection
+    conn.close()
+
+def get_fortune_by_id(rowid):
+
+    fortune = {}
+    conn = sqlite3.connect('./static/data/fortuneteller.db')
+    curs = conn.cursor()
+    result  = curs.execute("SELECT rowid, * FROM fortunes WHERE rowid=(?)", [rowid])
+    
+
+    #You can instead use cursor.fetchall()[0] to get the first item returned by your query.
+    for row in result:
+        fortune = {'id': row[0],  'fortune': row[1]}
+    
+    conn.close()
+    return fortune
+
 def get_random_fortune():
 
     #returns a random fortune
@@ -27,7 +52,7 @@ def validate_user(username, password):
     conn = sqlite3.connect('./static/data/fortuneteller.db')
     curs = conn.cursor()
     #get all columns if there is a match
-    result  = curs.execute("SELECT rowid, name, username, password FROM users WHERE username=(?) AND password= (?)", [username, password])
+    result  = curs.execute("SELECT name, username, password FROM users WHERE username=(?) AND password= (?)", [username, password])
   
     for row in result:
        user = {'name': row[0],  'username': row[1]}
@@ -84,28 +109,26 @@ def store_fortune(new_fortune, fortune_date):
 def delete_row(table, id):
     conn = sqlite3.connect('./static/data/fortuneteller.db')
     curs = conn.cursor()
-    updated_rows=[]
+    
     #this function uses the row id to search for the one to delete in the db.
     if table=="fortunes":
 
         curs.execute("DELETE FROM fortunes WHERE rowid=(?)", (id,))
         print("Deleting fortune id : " + id)
         conn.commit()
-        updated_rows = get_all_fortunes()
+         
 
     elif table=="users":
         curs.execute("DELETE FROM user WHERE rowid=(?)", (id,))
         print("Deleting user id : " + id)
         conn.commit()
-        updated_rows = get_all_users()
-
-    
+         
+  
     #close database connection
     conn.close()
 
     
-
-    return updated_rows
+     
 
 ################################ PAGE ROUTES ##################################
 
@@ -139,6 +162,8 @@ def admin_home():
 
     return render_template('admin.html')
 
+
+
 ############################### GET/POST ##################################    
 
 @app.route('/login', methods=["POST"])
@@ -153,6 +178,7 @@ def login():
 
     if user:
         success_msg = "Welcome, "+ user["name"]
+        print(type(user["name"]))
 
         data = {
             "name": user["name"],
@@ -161,6 +187,7 @@ def login():
 
         #load home if there is a user, along with data.
         return render_template('home.html', data=data)
+         
 
     else: 
         error_msg = "Login failed"
@@ -184,20 +211,13 @@ def get_fortune():
 
     return render_template('home.html', data=data)
 
-@app.route('/edit-fortune/<id>')
-def edit_fortune():
-
-    data={}
-    return render_template('admin.html', data=data)
     
 @app.route('/delete-fortune/<id>')
 def delete_fortunte(id):
     print("deleting fortune: " + id)
 
-    
-    #get_all_fortunes should return an updated list.
-
-    fortunes = delete_row("fortunes", id)
+    #this should return an updated list, minus the one we deleted.
+    delete_row("fortunes", id)
  
     return redirect(url_for('admin_home') )
 
@@ -225,6 +245,43 @@ def post_fortune():
       #  return render_template('admin.html',data=data )
     return redirect(url_for('admin_home'))
     #return render_template('admin.html' )
+
+
+@app.route('/edit-fortune/<id>', methods=["POST", "GET"])
+def edit_fortune(id ):
+
+    #if the edit is made, then we handle it as POST request
+    if request.method == 'POST':
+        updated_fortune = request.form['fortune-edit-input']
+
+        update_fortune(id, updated_fortune) #updates the fortune
+        return redirect(url_for('admin_home'))
+ 
+    print("edit fortune #" + id)
+
+    data ={}
+
+    fortune = get_fortune_by_id(id)
+
+    print(fortune)
+
+    if fortune:
+        data={
+            "fortune": fortune
+            
+            }
+
+    return render_template('edit.html' , data=data)
+
+# @app.route('/update-fortune/',  methods=['POST'])
+# def update_fortune():
+
+#     print('successfully updated fortune')
+
+#     return redirect(url_for('admin_home'))
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

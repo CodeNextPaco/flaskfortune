@@ -28,6 +28,10 @@ Sets a background keyframe animation "gradient" see keframe definition below bod
 	}
 }
 
+h1,h2,h3,p {
+
+    color:whitesmoke;
+}
 .main-container{
 
     text-align: center;
@@ -80,6 +84,8 @@ Sets a background keyframe animation "gradient" see keframe definition below bod
      
 }
 
+ 
+
 ul{
 
     text-align: left;
@@ -124,5 +130,21 @@ ul{
     background-color: #eee;
 
 }
+
+#get-fortune-btn{
+
+    width:200px;
+    height:200px;
+    border-style: none;
+    background-color:rgba(255, 255, 255, 0);
+    background-size: cover;
+    background-image: url('https://www.pngplay.com/wp-content/uploads/12/Crystal-Ball-Transparent-PNG.png');
+}
+
+#get-fortune-box{
+
+    margin:20px;
+}
+
 
   
