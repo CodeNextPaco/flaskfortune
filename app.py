@@ -318,13 +318,11 @@ def send_sms():
 
     #read about securing tokens in environment variables:
     # https://www.twilio.com/docs/usage/secure-credentials
-  
-     
 
-    twilio_acct_id = 'AC7dc9522a056142318ab0305ae59473dc'
-    twilio_phone_number = '+14143124358'
-    twilio_auth_token = '9722c766f2f769c3718e86b0236ba5c0'
-
+    #replace with your own credentials
+    twilio_acct_id = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+    twilio_phone_number = 'xxxxxxxxxxxxxxx'
+    twilio_auth_token = 'xxxxxxxxxxxxxxxxxxxxxxxx'
 
     client = Client(twilio_acct_id, twilio_auth_token)
 
