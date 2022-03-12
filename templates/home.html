@@ -9,9 +9,11 @@
 </head>
 <body>
 
+    <p class="logout"><a href="/logout">Logout</a></p>
     <div class="main-admin-container">
+        
 
-        <h2>Welcome back, {{ data.name}}</h2>
+        <h2>Welcome back, {{ session.name }}</h2>
 
         <h3>Get your Fortune</h3>
         <div id="get-fortune-box"> 

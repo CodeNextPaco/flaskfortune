@@ -1,4 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
+# The Session instance is not used for direct access, you should always use flask.session
+from flask_session import Session
 import sqlite3
 from datetime import datetime
 import random
@@ -7,6 +9,11 @@ import idna
 
 
 app = Flask(__name__)
+app.config["SESSION_PERMANENT"] = False #allow it to expire
+app.config["SESSION_TYPE"] = "filesystem" #store the session locally
+Session(app)
+
+
 
 ########################### DATABASE FUNCTIONS #############################
 
@@ -134,14 +141,26 @@ def delete_row(table, id):
 
 @app.route('/')
 def index():
+
+    if session["name"]:
+        return redirect(url_for('user_home'))
+
     return render_template('index.html')
 
 @app.route("/home")
 def user_home():
     print("were home!")
 
-    return render_template('home.html')
+    data ={}
 
+    #check the session to see if there is a user logged in
+    if session.get("name"):
+
+        return render_template('home.html' , data=data)
+
+    else:
+        return redirect(url_for('index'))
+        
 
 @app.route('/admin/')
 def admin_home():
@@ -168,7 +187,6 @@ def admin_home():
 
 @app.route('/login', methods=["POST"])
 def login():
-    print("Logging in...")
 
     username = request.form["username-field"]
     password = request.form["password-field"]
@@ -177,8 +195,8 @@ def login():
     user = validate_user(username, password)
 
     if user:
-        success_msg = "Welcome, "+ user["name"]
-        print(type(user["name"]))
+        #save the user into the session so it remembers them
+        session["name"] = user["name"]
 
         data = {
             "name": user["name"],
@@ -198,6 +216,12 @@ def login():
         #no user redirects back to the main login page, with error msg.
         return render_template('index.html', data=data)
     
+@app.route('/logout')
+def logout():
+    session["name"] = None
+    return redirect(url_for('index'))
+
+
 @app.route("/get_fortune", methods=["GET"])
 def get_fortune():
     print("getting fortune")
@@ -268,18 +292,9 @@ def edit_fortune(id ):
     if fortune:
         data={
             "fortune": fortune
-            
             }
 
     return render_template('edit.html' , data=data)
-
-# @app.route('/update-fortune/',  methods=['POST'])
-# def update_fortune():
-
-#     print('successfully updated fortune')
-
-#     return redirect(url_for('admin_home'))
-
 
 
 
