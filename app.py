@@ -4,6 +4,7 @@ from flask_session import Session
 import sqlite3
 from datetime import datetime
 import random
+from twilio.rest import Client
 
 import idna
 
@@ -296,6 +297,45 @@ def edit_fortune(id ):
 
     return render_template('edit.html' , data=data)
 
+
+############################### Twilio ##################################    
+
+
+@app.route('/send_sms' , methods=["POST"])
+def send_sms():
+
+    print("Sending message")
+    recipient_number = request.form["tel-input"]
+    fortune_to_send = request.form["fortune-sms"]
+    print(fortune_to_send)
+     
+    prefix = "+1"
+    #print(number)
+
+    #Adding a simple message
+    sms_body = fortune_to_send
+    number = prefix+recipient_number
+
+    #read about securing tokens in environment variables:
+    # https://www.twilio.com/docs/usage/secure-credentials
+  
+     
+
+    twilio_acct_id = 'AC7dc9522a056142318ab0305ae59473dc'
+    twilio_phone_number = '+14143124358'
+    twilio_auth_token = '9722c766f2f769c3718e86b0236ba5c0'
+
+
+    client = Client(twilio_acct_id, twilio_auth_token)
+
+    message = client.messages.create(
+        to= number, 
+        from_= twilio_phone_number,
+        body= sms_body)
+
+    print(f"Message id:  {message.sid}")
+  
+    return redirect(url_for("user_home"))
 
 
 if __name__ == '__main__':

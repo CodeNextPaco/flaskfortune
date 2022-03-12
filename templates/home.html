@@ -21,17 +21,26 @@
             <form id="post-fortune-form" action="get_fortune" method="GET" >
                 <button id="get-fortune-btn" type="submit"></button>
             </form>
-    
-        
+
+
         </div>
         
 
 
         {% if data.fortune %}
+        
+        <div class="send-text-container">
+            <h2> Here is your fortune </h2>
+            <form id="call-form" action="send_sms" method="POST" > 
+                <h1> {{ data.fortune }} </h1>
+                <p>Send Fortune to:</p>
+                <input name="tel-input" type="tel" placeholder="555-555-5555">
+                <input type="hidden" name="fortune-sms" value= "{{ data.fortune }}" >
+                <button type="submit">Send</button>
+    
+            </form>
 
-        <h2> Here is your fortune </h2>
-
-        <h1> {{ data.fortune }} </h1>
+        </div>
 
         {% endif %}
 
